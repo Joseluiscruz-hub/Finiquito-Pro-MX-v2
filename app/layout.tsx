@@ -3,7 +3,7 @@ import "./globals.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://finiquito-pro-mx.xxgoldninjaxx.chatgpt.site";
+  "https://finiquito-pro-mx-v2.example";
 
 export const viewport: Viewport = {
   width: "device-width",
