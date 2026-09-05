@@ -11,9 +11,11 @@ type Props = {
   result: CalculationResult;
   detailOpen: boolean;
   onToggleDetail: () => void;
+  onSaveCase: () => void;
+  caseStatus: "idle" | "saved" | "error";
 };
 
-export function ResultCard({ form, result, detailOpen, onToggleDetail }: Props) {
+export function ResultCard({ form, result, detailOpen, onToggleDetail, onSaveCase, caseStatus }: Props) {
   const handleExport = useCallback(() => exportCsv(form, result), [form, result]);
   const handlePrint = useCallback(() => window.print(), []);
   const folio = documentFolio(form);
@@ -104,7 +106,7 @@ export function ResultCard({ form, result, detailOpen, onToggleDetail }: Props) 
         </p>
       )}
 
-      <div className="result-actions">
+      <div className="result-actions three">
         <button
           type="button"
           className="primary-button wide"
@@ -120,6 +122,14 @@ export function ResultCard({ form, result, detailOpen, onToggleDetail }: Props) 
           disabled={!result.validDates}
         >
           Exportar a Excel/CSV
+        </button>
+        <button
+          type="button"
+          className="ghost-button wide span-2"
+          onClick={onSaveCase}
+          disabled={!result.validDates}
+        >
+          {caseStatus === "saved" ? "Caso guardado" : caseStatus === "error" ? "No se pudo guardar" : "Guardar en historial"}
         </button>
       </div>
 
