@@ -10,6 +10,7 @@ export type DraftStatus = "idle" | "saved" | "error";
 type UseDraftReturn = {
   form: FormState;
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+  loadForm: (next: FormState) => void;
   saveDraft: () => void;
   resetForm: () => void;
   status: DraftStatus;
@@ -37,7 +38,6 @@ export function useDraft(): UseDraftReturn {
       }
     };
 
-    // Se difiere un turno para mantener idéntico el primer render de servidor y cliente.
     const restoreTimer = window.setTimeout(restore, 0);
     const handleStorage = (event: StorageEvent) => {
       if (event.key === DRAFT_STORAGE_KEY) restore();
@@ -54,6 +54,11 @@ export function useDraft(): UseDraftReturn {
   const update = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setStatus("idle");
     setForm((current) => ({ ...current, [key]: value }));
+  }, []);
+
+  const loadForm = useCallback((next: FormState) => {
+    setStatus("idle");
+    setForm(sanitizeDraft(next));
   }, []);
 
   const saveDraft = useCallback(() => {
@@ -78,5 +83,5 @@ export function useDraft(): UseDraftReturn {
     }
   }, []);
 
-  return { form, update, saveDraft, resetForm, status };
+  return { form, update, loadForm, saveDraft, resetForm, status };
 }
