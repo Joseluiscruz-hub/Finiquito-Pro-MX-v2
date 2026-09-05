@@ -6,7 +6,9 @@ import { FormDeducciones } from "./components/FormDeducciones";
 import { FormPrestaciones } from "./components/FormPrestaciones";
 import { FormSeparacion } from "./components/FormSeparacion";
 import { PrintReceipt } from "./components/PrintReceipt";
+import { CaseHistory } from "./components/CaseHistory";
 import { ResultCard } from "./components/ResultCard";
+import { useCases } from "./hooks/useCases";
 import { useDraft } from "./hooks/useDraft";
 import { calculate } from "./lib/calculations";
 import {
@@ -15,6 +17,7 @@ import {
   UMA_2026,
 } from "./lib/constants";
 import { money } from "./lib/formatters";
+import type { FormState } from "./types/finiquito";
 
 const STEPS = [
   { number: 1, label: "Separación" },
@@ -23,7 +26,8 @@ const STEPS = [
 ] as const;
 
 export default function Home() {
-  const { form, update, saveDraft, resetForm, status } = useDraft();
+  const { form, update, loadForm, saveDraft, resetForm, status } = useDraft();
+  const { cases, status: caseStatus, saveCase, deleteCase } = useCases();
   const [activeStep, setActiveStep] = useState(1);
   const [detailOpen, setDetailOpen] = useState(true);
 
@@ -35,13 +39,16 @@ export default function Home() {
     [],
   );
   const handleToggleDetail = useCallback(() => setDetailOpen((o) => !o), []);
+  const handleSaveCase = useCallback(() => {
+    saveCase(form, result);
+  }, [form, result, saveCase]);
+  const handleOpenCase = useCallback((next: FormState) => {
+    loadForm(next);
+    setActiveStep(1);
+  }, [loadForm]);
+
   const handleStepKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
-    if (![
-      "ArrowLeft",
-      "ArrowRight",
-      "Home",
-      "End",
-    ].includes(event.key)) return;
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
 
     event.preventDefault();
     const current = Number(event.currentTarget.dataset.step);
@@ -66,13 +73,11 @@ export default function Home() {
 
   return (
     <>
-      {/* Skip link para navegación con teclado */}
       <a className="skip-link" href="#calculadora">
         Ir al contenido principal
       </a>
 
       <main>
-        {/* ── Topbar ───────────────────────────────────────── */}
         <header className="topbar">
           <a className="brand" href="#inicio" aria-label="Finiquito Pro MX — ir al inicio">
             <span className="brand-mark" aria-hidden="true">FP</span>
@@ -85,6 +90,7 @@ export default function Home() {
           <nav aria-label="Navegación principal">
             <a className="active" href="#calculadora">Cálculo</a>
             <a href="#fundamentos">Marco legal</a>
+            <a href="#historial">Historial</a>
             <a href="#privacidad">Privacidad</a>
           </nav>
 
@@ -100,7 +106,6 @@ export default function Home() {
           <span className="sr-only" aria-live="polite">{saveLabel}</span>
         </header>
 
-        {/* ── Trust strip ──────────────────────────────────── */}
         <section className="trust-strip" id="inicio" aria-label="Parámetros oficiales vigentes">
           <div>
             <span className="status-dot" aria-hidden="true" />{" "}
@@ -114,7 +119,6 @@ export default function Home() {
           <span className="privacy-chip">Tus datos no salen de este dispositivo</span>
         </section>
 
-        {/* ── Workspace ────────────────────────────────────── */}
         <section className="workspace" id="calculadora" aria-label="Calculadora de finiquito">
           <div className="calculator-column">
             <div className="page-heading">
@@ -132,12 +136,12 @@ export default function Home() {
                   <span><strong>100%</strong> cálculo local</span>
                   <span><strong>A4</strong> recibo membretado</span>
                   <span><strong>CSV</strong> exportable y seguro</span>
+                  <span><strong>Local</strong> historial de casos</span>
                 </div>
               </div>
               <span className="year-pill">MX · 2026</span>
             </div>
 
-            {/* Stepper */}
             <div className="stepper" role="tablist" aria-label="Pasos del cálculo">
               {STEPS.map((step) => (
                 <button
@@ -159,7 +163,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Form card */}
             <div className="form-card">
               <ErrorBoundary>
                 {activeStep === 1 && (
@@ -205,9 +208,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            <ErrorBoundary>
+              <CaseHistory cases={cases} onOpen={handleOpenCase} onDelete={deleteCase} />
+            </ErrorBoundary>
           </div>
 
-          {/* Result panel */}
           <aside
             className="result-column"
             aria-live="polite"
@@ -219,6 +224,8 @@ export default function Home() {
                 result={result}
                 detailOpen={detailOpen}
                 onToggleDetail={handleToggleDetail}
+                onSaveCase={handleSaveCase}
+                caseStatus={caseStatus}
               />
             </ErrorBoundary>
 
@@ -237,11 +244,11 @@ export default function Home() {
               <span>Validación de fechas</span>
               <span>Deducciones capturadas con criterio fiscal</span>
               <span>Datos guardados solo en el navegador</span>
+              <span>Historial local por folio</span>
             </div>
           </aside>
         </section>
 
-        {/* ── Fundamentos legales ──────────────────────────── */}
         <section
           className="legal-section"
           id="fundamentos"
@@ -301,7 +308,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Footer ───────────────────────────────────────── */}
         <footer id="privacidad">
           <div className="brand footer-brand">
             <span className="brand-mark" aria-hidden="true">FP</span>
@@ -317,7 +323,6 @@ export default function Home() {
           <span>Herramienta corporativa de cálculo laboral · México 2026</span>
         </footer>
 
-        {/* ── Recibo para impresión ─────────────────────────── */}
         <PrintReceipt form={form} result={result} />
       </main>
     </>
