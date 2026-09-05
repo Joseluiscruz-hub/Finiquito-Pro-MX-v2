@@ -27,7 +27,13 @@ export const workZoneLabels: Record<WorkZone, string> = {
 /** Datos de ejemplo pre-cargados; se usan al restablecer el formulario. */
 export const initialForm: FormState = {
   employee: "María López Hernández",
+  employeeRfc: "LOHM900315MDF",
   company: "Empresa de ejemplo, S.A. de C.V.",
+  companyRfc: "EEM010101AA1",
+  companyAddress: "Av. Reforma 100, Ciudad de México",
+  documentCity: "Ciudad de México",
+  preparedBy: "Recursos Humanos",
+  folio: "",
   exitType: "despido-injustificado",
   workZone: "general",
   startDate: "2022-03-14",

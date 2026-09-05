@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 import type { CalculationResult, FormState } from "../types/finiquito";
+import { documentFolio } from "../lib/folio";
 import { money } from "../lib/formatters";
 import { exportCsv } from "../lib/export";
 
@@ -15,6 +16,7 @@ type Props = {
 export function ResultCard({ form, result, detailOpen, onToggleDetail }: Props) {
   const handleExport = useCallback(() => exportCsv(form, result), [form, result]);
   const handlePrint = useCallback(() => window.print(), []);
+  const folio = documentFolio(form);
 
   const isLiquidation = result.liquidation > 0;
 
@@ -29,6 +31,10 @@ export function ResultCard({ form, result, detailOpen, onToggleDetail }: Props) 
 
       <p className="employee-name" title={form.employee || "Trabajador sin nombre"}>
         {form.employee || "Trabajador sin nombre"}
+      </p>
+      <p className="result-folio">
+        Folio {folio}
+        {form.companyRfc ? ` · RFC ${form.companyRfc}` : ""}
       </p>
 
       <div className="net-result">
@@ -105,7 +111,7 @@ export function ResultCard({ form, result, detailOpen, onToggleDetail }: Props) 
           onClick={handlePrint}
           disabled={!result.validDates}
         >
-          Imprimir recibo
+          Imprimir / PDF
         </button>
         <button
           type="button"

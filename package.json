@@ -1,6 +1,6 @@
 {
-  "name": "calculadora-laboral-mx",
-  "version": "0.2.0",
+  "name": "finiquito-pro-mx",
+  "version": "0.3.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -10,7 +10,7 @@
     "build": "vinext build",
     "start": "vinext start",
     "test": "npm run test:calc && npm run build && node --test tests/rendered-html.test.mjs",
-    "test:calc": "node --import tsx/esm --test tests/calculations.test.ts tests/data-safety.test.ts",
+    "test:calc": "node --import tsx/esm --test tests/calculations.test.ts tests/data-safety.test.ts tests/folio.test.ts",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "lint:fix": "eslint . --ignore-pattern dist --ignore-pattern .next --fix",
     "typecheck": "tsc --noEmit"
@@ -39,5 +39,5 @@
     "wrangler": "4.126.0"
   },
   "type": "module",
-  "displayName": "Calculadora Laboral MX 2026"
+  "displayName": "Finiquito Pro MX"
 }

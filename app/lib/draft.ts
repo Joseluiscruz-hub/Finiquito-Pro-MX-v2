@@ -1,5 +1,6 @@
 import type { ExitType, FormState, WorkZone } from "../types/finiquito";
 import { initialForm } from "./constants";
+import { normalizeFolio } from "./folio";
 
 const DRAFT_VERSION = 1;
 const exitTypes = new Set<ExitType>([
@@ -18,8 +19,17 @@ type DraftEnvelope = {
   form: unknown;
 };
 
-function safeText(value: unknown, fallback: string): string {
-  return typeof value === "string" ? value.slice(0, 160) : fallback;
+function safeText(value: unknown, fallback: string, max = 160): string {
+  return typeof value === "string" ? value.slice(0, max) : fallback;
+}
+
+function safeRfc(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const cleaned = value
+    .toUpperCase()
+    .replace(/[^A-Z0-9&Ñ]/g, "")
+    .slice(0, 13);
+  return cleaned || fallback;
 }
 
 function safeNumber(value: unknown, fallback: number): number {
@@ -45,7 +55,13 @@ export function sanitizeDraft(value: unknown): FormState {
 
   return {
     employee: safeText(record.employee, initialForm.employee),
+    employeeRfc: safeRfc(record.employeeRfc, ""),
     company: safeText(record.company, initialForm.company),
+    companyRfc: safeRfc(record.companyRfc, ""),
+    companyAddress: safeText(record.companyAddress, ""),
+    documentCity: safeText(record.documentCity, initialForm.documentCity, 80),
+    preparedBy: safeText(record.preparedBy, initialForm.preparedBy, 80),
+    folio: typeof record.folio === "string" ? normalizeFolio(record.folio) : "",
     exitType: exitTypes.has(record.exitType as ExitType)
       ? (record.exitType as ExitType)
       : initialForm.exitType,

@@ -1,5 +1,6 @@
 import type { CalculationResult, FormState } from "../types/finiquito";
 import { exitLabels } from "./constants";
+import { documentFolio } from "./folio";
 
 function spreadsheetSafe(value: string | number | null): string {
   const text = String(value ?? "");
@@ -12,12 +13,18 @@ function csvCell(value: string | number | null): string {
 }
 
 export function buildCsv(form: FormState, result: CalculationResult): string {
+  const folio = documentFolio(form);
   const rows: (string | number | null)[][] = [
     ["FINIQUITO PRO MX 2026"],
+    ["Folio", folio],
     ["Trabajador", form.employee],
+    ["RFC trabajador", form.employeeRfc],
     ["Empresa", form.company],
+    ["RFC empresa", form.companyRfc],
+    ["Domicilio", form.companyAddress],
     ["Causa", exitLabels[form.exitType]],
     ["Periodo", `${form.startDate} a ${form.endDate}`],
+    ["Elaboró", form.preparedBy],
     [],
     ["Concepto", "Fórmula", "Fundamento", "Importe"],
     ...result.items
@@ -64,7 +71,7 @@ export function exportCsv(form: FormState, result: CalculationResult): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `finiquito-${safeFileSlug(form.employee)}.csv`;
+  link.download = `finiquito-${documentFolio(form).toLowerCase()}-${safeFileSlug(form.employee)}.csv`;
 
   // Añadir al DOM asegura compatibilidad en Firefox y Safari.
   document.body.appendChild(link);
