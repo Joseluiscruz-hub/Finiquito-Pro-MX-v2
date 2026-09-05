@@ -130,6 +130,7 @@ export default function Home() {
                 <div className="hero-insights" aria-label="Capacidades principales">
                   <span><strong>6</strong> escenarios laborales</span>
                   <span><strong>100%</strong> cálculo local</span>
+                  <span><strong>A4</strong> recibo membretado</span>
                   <span><strong>CSV</strong> exportable y seguro</span>
                 </div>
               </div>
@@ -310,10 +311,10 @@ export default function Home() {
             </span>
           </div>
           <p>
-            Privacidad por diseño: este prototipo procesa y guarda el borrador
-            únicamente en tu navegador.
+            Privacidad por diseño: el cálculo y el borrador se procesan solo en
+            este navegador. El recibo A4 queda listo para imprimir o guardar como PDF.
           </p>
-          <span>Hecho para decisiones laborales más claras · 2026</span>
+          <span>Herramienta corporativa de cálculo laboral · México 2026</span>
         </footer>
 
         {/* ── Recibo para impresión ─────────────────────────── */}
