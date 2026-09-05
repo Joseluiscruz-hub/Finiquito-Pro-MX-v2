@@ -1,0 +1,318 @@
+/* Recibo A4 e identidad en el panel de resultado.
+   Se importa después de globals.css para ganar a las reglas Arial antiguas. */
+
+.employee-name {
+  padding-bottom: 4px;
+  border-bottom: 0;
+}
+
+.result-folio {
+  margin: 0 24px 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--soft-line);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 14mm 14mm;
+  }
+
+  body {
+    background: #fff;
+    color: #111827;
+  }
+
+  main > *:not(.print-only) {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  body .receipt {
+    padding: 0;
+    color: #111827;
+    font: 10.5px/1.45 "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  }
+
+  .receipt-letterhead {
+    padding-bottom: 14px;
+    border-bottom: 2.5px solid #0b1730;
+    display: flex;
+    justify-content: space-between;
+    gap: 28px;
+    align-items: flex-start;
+  }
+
+  .receipt-issuer strong {
+    display: block;
+    color: #0b1730;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .receipt-issuer p,
+  .receipt-brand p {
+    margin: 3px 0 0;
+    color: #4b5563;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+  }
+
+  .receipt-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: right;
+  }
+
+  .receipt-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: #0b1730;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .receipt-brand strong {
+    display: block;
+    color: #0b1730;
+    font-size: 13px;
+  }
+
+  .receipt-title-row {
+    margin: 18px 0 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: flex-end;
+  }
+
+  .receipt-kicker {
+    margin: 0 0 4px;
+    color: #2457d6;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  body .receipt h1 {
+    margin: 0;
+    max-width: 420px;
+    color: #0b1730;
+    text-align: left;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .receipt-ids {
+    margin: 0;
+    min-width: 180px;
+  }
+
+  .receipt-ids div {
+    margin-bottom: 6px;
+    text-align: right;
+  }
+
+  .receipt-ids dt {
+    color: #6b7280;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .receipt-ids dd {
+    margin: 2px 0 0;
+    color: #0b1730;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .receipt-meta {
+    margin-bottom: 16px;
+    padding: 12px 0;
+    border-top: 1px solid #d1d5db;
+    border-bottom: 1px solid #d1d5db;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+  }
+
+  .receipt-meta span,
+  .receipt-meta small {
+    display: block;
+    color: #6b7280;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 9px;
+  }
+
+  .receipt-meta strong {
+    display: block;
+    margin: 2px 0;
+    color: #111827;
+    font-size: 12px;
+  }
+
+  body .receipt table.receipt-table,
+  .receipt-table {
+    width: 100%;
+    margin: 0 0 14px;
+    border-collapse: collapse;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .receipt-table caption {
+    caption-side: top;
+    padding: 0 0 6px;
+    color: #0b1730;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  body .receipt .receipt-table th,
+  body .receipt .receipt-table td {
+    padding: 6px 8px;
+    border: 0;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .receipt-table thead th {
+    border-bottom: 1px solid #0b1730;
+    color: #4b5563;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .receipt-table td:last-child,
+  .receipt-table th:last-child {
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .receipt-table td small {
+    display: block;
+    margin-top: 2px;
+    color: #6b7280;
+    font-size: 8px;
+  }
+
+  .receipt-table tfoot th {
+    padding-top: 8px;
+    border-bottom: 0;
+    color: #0b1730;
+    font-size: 10px;
+  }
+
+  .receipt-totals {
+    margin: 8px 0 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 8px;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .receipt-totals > div {
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .receipt-totals span {
+    display: block;
+    color: #6b7280;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .receipt-totals strong {
+    display: block;
+    margin-top: 4px;
+    color: #111827;
+    font-size: 13px;
+  }
+
+  .receipt-net {
+    border-color: #0b1730;
+    background: #0b1730;
+    color: #fff;
+  }
+
+  .receipt-net span,
+  .receipt-net strong {
+    color: #fff;
+  }
+
+  body .receipt .receipt-note,
+  .receipt-note {
+    margin: 0 0 28px;
+    color: #4b5563;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 8.5px;
+    line-height: 1.5;
+  }
+
+  body .signature-row {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  body .signature-row span {
+    display: block;
+    height: 42px;
+    padding-top: 0;
+    border-top: 0;
+    border-bottom: 1px solid #111827;
+    text-align: left;
+  }
+
+  .signature-row strong {
+    display: block;
+    margin-top: 8px;
+    color: #0b1730;
+    font-size: 10px;
+  }
+
+  .signature-row small {
+    color: #6b7280;
+    font-size: 9px;
+  }
+
+  .receipt-footer {
+    margin-top: 22px;
+    padding-top: 8px;
+    border-top: 1px solid #d1d5db;
+    color: #6b7280;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+}

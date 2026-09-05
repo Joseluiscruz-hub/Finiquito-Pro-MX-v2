@@ -21,7 +21,13 @@ export type LineItem = {
 
 export type FormState = {
   employee: string;
+  employeeRfc: string;
   company: string;
+  companyRfc: string;
+  companyAddress: string;
+  documentCity: string;
+  preparedBy: string;
+  folio: string;
   exitType: ExitType;
   workZone: WorkZone;
   startDate: string;
