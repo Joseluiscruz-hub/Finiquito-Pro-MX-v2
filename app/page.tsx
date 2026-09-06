@@ -6,6 +6,7 @@ import { FormDeducciones } from "./components/FormDeducciones";
 import { FormPrestaciones } from "./components/FormPrestaciones";
 import { FormSeparacion } from "./components/FormSeparacion";
 import { PrintReceipt } from "./components/PrintReceipt";
+import { BatchCsv } from "./components/BatchCsv";
 import { CaseHistory } from "./components/CaseHistory";
 import { ResultCard } from "./components/ResultCard";
 import { useCases } from "./hooks/useCases";
@@ -17,7 +18,7 @@ import {
   UMA_2026,
 } from "./lib/constants";
 import { money } from "./lib/formatters";
-import type { FormState } from "./types/finiquito";
+import type { CalculationResult, FormState } from "./types/finiquito";
 
 const STEPS = [
   { number: 1, label: "Separación" },
@@ -45,7 +46,16 @@ export default function Home() {
   const handleOpenCase = useCallback((next: FormState) => {
     loadForm(next);
     setActiveStep(1);
+    window.requestAnimationFrame(() => {
+      document.getElementById("calculadora")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }, [loadForm]);
+  const handleSaveBatchRow = useCallback(
+    (next: FormState, nextResult: CalculationResult) => {
+      saveCase(next, nextResult);
+    },
+    [saveCase],
+  );
 
   const handleStepKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -89,8 +99,9 @@ export default function Home() {
 
           <nav aria-label="Navegación principal">
             <a className="active" href="#calculadora">Cálculo</a>
-            <a href="#fundamentos">Marco legal</a>
+            <a href="#lote">Lote CSV</a>
             <a href="#historial">Historial</a>
+            <a href="#fundamentos">Marco legal</a>
             <a href="#privacidad">Privacidad</a>
           </nav>
 
@@ -135,7 +146,7 @@ export default function Home() {
                   <span><strong>6</strong> escenarios laborales</span>
                   <span><strong>100%</strong> cálculo local</span>
                   <span><strong>A4</strong> recibo membretado</span>
-                  <span><strong>CSV</strong> exportable y seguro</span>
+                  <span><strong>CSV</strong> lote e individual</span>
                   <span><strong>Local</strong> historial de casos</span>
                 </div>
               </div>
@@ -208,6 +219,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            <ErrorBoundary>
+              <BatchCsv onOpen={handleOpenCase} onSave={handleSaveBatchRow} />
+            </ErrorBoundary>
+
             <ErrorBoundary>
               <CaseHistory cases={cases} onOpen={handleOpenCase} onDelete={deleteCase} />
             </ErrorBoundary>
@@ -245,6 +261,7 @@ export default function Home() {
               <span>Deducciones capturadas con criterio fiscal</span>
               <span>Datos guardados solo en el navegador</span>
               <span>Historial local por folio</span>
+              <span>Lote CSV hasta 200 filas</span>
             </div>
           </aside>
         </section>
