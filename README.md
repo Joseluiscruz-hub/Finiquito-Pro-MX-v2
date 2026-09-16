@@ -6,7 +6,8 @@
 
 Estima finiquitos y liquidaciones con parámetros 2026, desglose auditable, privacidad por diseño y exportación segura.
 
-![Versión](https://img.shields.io/badge/versión-0.2.0-0d1b36)
+![Versión](https://img.shields.io/badge/versión-0.3.0-0d1b36)
+![License](https://img.shields.io/badge/license-MIT-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.13.0-339933?logo=nodedotjs&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16.3-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
@@ -249,6 +250,10 @@ Artículos de la LFT referenciados por el motor: 48, 50, 76, 79, 80, 87, 162, 48
 - No sustituye evidencia documental ni revisión profesional.
 - Los parámetros oficiales deben revisarse y actualizarse cada año.
 - La aplicación está enfocada en relaciones laborales reguladas por la legislación mexicana y no debe extrapolarse a otros países.
+
+## Licencia
+
+MIT License. Ver el archivo [LICENSE](LICENSE).
 
 ## Autor
 
